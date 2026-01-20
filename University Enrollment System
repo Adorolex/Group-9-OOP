@@ -1,0 +1,167 @@
+package com.university.app;
+
+import java.io.*;
+import java.util.*;
+
+/*
+ SINGLE-FILE ENROLLMENT SYSTEM
+ Java SE 8+
+ Console-based
+ File storage only
+ Polymorphism + Exceptions
+*/
+
+public class Main {
+
+    // ===== MAIN =====
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        EnrollmentService service = new EnrollmentService();
+        Notification notifier = new ConsoleNotification();
+
+        Student student = new Student("S01", "Alice", 0);
+
+        Course java = new Course("C101", "Java", 2, 3, Arrays.asList());
+        Course algo = new Course("C102", "Algorithms", 2, 3, Arrays.asList("C101"));
+
+        Map<String, Course> courses = new HashMap<>();
+        courses.put(java.id, java);
+        courses.put(algo.id, algo);
+
+        while (true) {
+            System.out.println("\n1.Enroll  2.Drop  3.View  0.Exit");
+            int choice = readInt(sc);
+
+            try {
+                switch (choice) {
+                    case 1:
+                        System.out.print("Enter Course ID: ");
+                        service.enroll(student, courses.get(sc.next()), notifier);
+                        break;
+                    case 2:
+                        System.out.print("Enter Course ID: ");
+                        service.drop(student, courses.get(sc.next()), notifier);
+                        break;
+                    case 3:
+                        student.displayInfo();
+                        break;
+                    case 0:
+                        System.exit(0);
+                    default:
+                        System.out.println("Invalid option.");
+                }
+            } catch (RuntimeException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+    }
+
+    private static int readInt(Scanner sc) {
+        while (!sc.hasNextInt()) {
+            sc.next();
+            System.out.print("Enter number: ");
+        }
+        return sc.nextInt();
+    }
+}
+
+/* ===== MODELS ===== */
+
+abstract class User {
+    String id, name;
+    public abstract void displayInfo();
+}
+
+class Student extends User {
+    int credits;
+    Set<String> completed = new HashSet<>();
+    Set<String> enrolled = new HashSet<>();
+
+    Student(String id, String name, int credits) {
+        this.id = id;
+        this.name = name;
+        this.credits = credits;
+    }
+
+    @Override
+    public void displayInfo() {
+        System.out.println("Student: " + name +
+                " | Credits: " + credits +
+                " | Enrolled: " + enrolled);
+    }
+}
+
+class Course {
+    String id, title;
+    int capacity, enrolledCount, credits;
+    List<String> prerequisites;
+
+    Course(String id, String title, int capacity, int credits, List<String> pre) {
+        this.id = id;
+        this.title = title;
+        this.capacity = capacity;
+        this.credits = credits;
+        this.prerequisites = pre;
+    }
+
+    boolean hasSeat() {
+        return enrolledCount < capacity;
+    }
+}
+
+/* ===== SERVICE ===== */
+
+class EnrollmentService {
+    private static final int MAX_CREDITS = 18;
+
+    void enroll(Student s, Course c, Notification n) {
+        if (c == null) throw new RuntimeException("Course not found");
+        if (!c.hasSeat()) throw new RuntimeException("Course full");
+        if (!s.completed.containsAll(c.prerequisites))
+            throw new RuntimeException("Prerequisites not met");
+        if (s.credits + c.credits > MAX_CREDITS)
+            throw new RuntimeException("Credit limit exceeded");
+
+        s.enrolled.add(c.id);
+        s.credits += c.credits;
+        c.enrolledCount++;
+        FileStorage.save("enrollments.txt", s.id + "," + c.id);
+        n.send("Enrolled in " + c.title);
+    }
+
+    void drop(Student s, Course c, Notification n) {
+        if (c == null || !s.enrolled.contains(c.id))
+            throw new RuntimeException("Not enrolled");
+
+        s.enrolled.remove(c.id);
+        s.credits -= c.credits;
+        c.enrolledCount--;
+        n.send("Dropped " + c.title);
+    }
+}
+
+/* ===== POLYMORPHISM (INTERFACE) ===== */
+
+interface Notification {
+    void send(String msg);
+}
+
+class ConsoleNotification implements Notification {
+    @Override
+    public void send(String msg) {
+        System.out.println("NOTIFICATION: " + msg);
+    }
+}
+
+/* ===== FILE STORAGE ===== */
+
+class FileStorage {
+    static void save(String file, String data) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
+            bw.write(data);
+            bw.newLine();
+        } catch (IOException e) {
+            throw new RuntimeException("File error");
+        }
+    }
+}
