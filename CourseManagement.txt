@@ -1,0 +1,78 @@
+package com.university.course;
+import java.util.ArrayList;
+import java.util.List;
+public class Course {
+	//Attributes
+	   // Encapsulation: private fields
+	   private String courseCode;
+	   private String courseName;
+	   private int capacity;
+	   private List<String> prerequisites;
+	   private List<String> enrolledStudents;
+	 
+	   // Constructor
+	   public Course(String courseCode, String courseName) {
+	       this.courseCode = courseCode;
+	       this.courseName = courseName;
+	       this.capacity = capacity;
+	       this.prerequisites = new ArrayList<>();
+	       this.enrolledStudents = new ArrayList<>();
+	   }
+	 
+	   // Getters & Setters
+	   public String getCourseCode() {
+	       return courseCode;
+	   }
+	 
+	   public String getCourseName() {
+	       return courseName;
+	   }
+	 
+	   public int getCapacity() {
+	       return capacity;
+	   }
+	 
+	   public void setCourseName(String courseName) {
+	       this.courseName = courseName;
+	   }
+	 
+	   public void setCapacity(int capacity) {
+	       if (capacity > 0) {
+	           this.capacity = capacity;
+	       }
+	   }
+	 
+	   // Add prerequisite
+	   public void addPrerequisite(String courseCode) {
+	       prerequisites.add(courseCode);
+	   }
+	 
+	   public List<String> getPrerequisites() {
+	       return prerequisites;
+	   }
+	 
+	   // Enrollment related
+	   public boolean enrollStudent(String studentId) {
+	       if (enrolledStudents.size() < capacity) {
+	           enrolledStudents.add(studentId);
+	           return true;
+	       }
+	       return false;
+	   }
+	 
+	   public void removeStudent(String studentId) {
+	       enrolledStudents.remove(studentId);
+	   }
+	 
+	   public int getEnrolledCount() {
+	       return enrolledStudents.size();
+	   }
+	// Display course info
+	   public void displayCourse() {
+	       System.out.println(courseCode + " - " + courseName);
+	       System.out.println("Capacity: " + capacity);
+	       System.out.println("Enrolled: " + enrolledStudents.size());
+	       System.out.println("Prerequisites: " + prerequisites);
+	       System.out.println("-------------------------");
+	   }
+	
