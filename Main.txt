@@ -1,0 +1,27 @@
+import com.university.courses.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        CourseManager manager = new CourseManager();
+
+        Course c1 = new Course("CS101", "Intro to CS", 3);
+        Course c2 = new Course("CS102", "Data Structures", 2);
+
+        c2.addPrerequisite("CS101");
+
+        manager.addCourse(c1);
+        manager.addCourse(c2);
+
+        manager.viewAllCourses();
+
+        manager.updateCourse("CS101", "Introduction to Computer Science", 5);
+
+        manager.viewAllCourses();
+
+        manager.deleteCourse("CS102");
+
+        manager.viewAllCourses();
+    }
+}
