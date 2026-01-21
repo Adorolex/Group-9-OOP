@@ -1,0 +1,15 @@
+package com.university.reports;
+//abstract
+public abstract class Report {
+	 private String reportName;
+
+	    public Report(String reportName) {
+	        this.reportName = reportName;
+	    }
+
+	    public String getReportName() {
+	        return reportName;
+	    }
+//Polymorphism
+	    public abstract void generate();
+}

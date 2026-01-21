@@ -1,0 +1,18 @@
+package com.university.reports;
+
+public class ReportMain {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Report r1 = new StudentTranscriptReport("Ahmed Ali", 3.7);
+        Report r2 = new CourseRosterReport("OOP Java", 45);
+        Report r3 = new InstructorLoadReport("Dr. Hassan", 3);
+        Report r4 = new DepartmentSummaryReport("Computer Science", 20, 600);
+
+        r1.generate();
+        r2.generate();
+        r3.generate();
+        r4.generate();
+    }
+	}
+

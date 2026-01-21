@@ -1,0 +1,22 @@
+package com.university.reports;
+//Inheritance
+	public class InstructorLoadReport extends Report {
+
+	    private String instructorName;
+	    private int totalCourses;
+
+	    public InstructorLoadReport(String instructorName, int totalCourses) {
+	        super("Instructor Teaching Load Report");
+	        this.instructorName = instructorName;
+	        this.totalCourses = totalCourses;
+	    }
+
+	    @Override
+	    public void generate() {
+	        System.out.println("=== " + getReportName() + " ===");
+	        System.out.println("Instructor: " + instructorName);
+	        System.out.println("Courses Assigned: " + totalCourses);
+	        System.out.println("--------------------------");
+	    }
+
+}

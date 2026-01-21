@@ -1,0 +1,24 @@
+package com.university.reports;
+
+	public class DepartmentSummaryReport extends Report {
+
+	    private String departmentName;
+	    private int totalCourses;
+	    private int totalStudents;
+
+	    public DepartmentSummaryReport(String departmentName, int totalCourses, int totalStudents) {
+	        super("Department Summary Report");
+	        this.departmentName = departmentName;
+	        this.totalCourses = totalCourses;
+	        this.totalStudents = totalStudents;
+	    }
+
+	    @Override
+	    public void generate() {
+	        System.out.println("=== " + getReportName() + " ===");
+	        System.out.println("Department: " + departmentName);
+	        System.out.println("Total Courses: " + totalCourses);
+	        System.out.println("Total Students: " + totalStudents);
+	        System.out.println("--------------------------");
+	    }
+}

@@ -1,0 +1,22 @@
+package com.university.reports;
+//Inheritanc
+	public class CourseRosterReport extends Report {
+
+	    private String courseName;
+	    private int numberOfStudents;
+
+	    public CourseRosterReport(String courseName, int numberOfStudents) {
+	        super("Course Roster Report");
+	        this.courseName = courseName;
+	        this.numberOfStudents = numberOfStudents;
+	    }
+//polymorphism
+	    @Override
+	    public void generate() {
+	        System.out.println("=== " + getReportName() + " ===");
+	        System.out.println("Course: " + courseName);
+	        System.out.println("Enrolled Students: " + numberOfStudents);
+	        System.out.println("--------------------------");
+	    }
+
+}

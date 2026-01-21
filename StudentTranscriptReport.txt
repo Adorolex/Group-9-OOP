@@ -1,0 +1,23 @@
+package com.university.reports;
+//inheritance
+	public class StudentTranscriptReport extends Report {
+
+	    private String studentName;
+	    private double gpa;
+
+	    public StudentTranscriptReport(String studentName, double gpa) {
+	        super("Student Transcript Report");
+	        this.studentName = studentName;
+	        this.gpa = gpa;
+	    }
+//polymorphism
+	    @Override
+	    public void generate() {
+	        System.out.println("=== " + getReportName() + " ===");
+	        System.out.println("Student Name: " + studentName);
+	        System.out.println("GPA: " + gpa);
+	        System.out.println("--------------------------");
+	    }
+	}
+
+
